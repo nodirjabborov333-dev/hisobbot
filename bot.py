@@ -18,7 +18,10 @@ from datetime import date
 # =======================
 # BOT TOKEN
 # =======================
-BOT_TOKEN = "8516838545:AAHi4n_0FaNhJ7jNKJj8EYmFL4xWC35r9nY"
+import os
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
 
 # =======================
 # DATABASE
