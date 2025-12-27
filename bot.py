@@ -8,12 +8,9 @@ from telegram.ext import (
 )
 
 import sqlite3
+import os
 from datetime import date
 from apscheduler.schedulers.background import BackgroundScheduler
-
-
-import sqlite3
-from datetime import date
 
 # =======================
 # BOT TOKEN
@@ -22,6 +19,8 @@ import os
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
+if not BOT_TOKEN:
+    raise RuntimeError("BOT_TOKEN topilmadi")
 
 # =======================
 # DATABASE
@@ -226,21 +225,10 @@ def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("oylik", oylik))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(
-        send_reminders,
-        "cron",
-        hour=20,
-        minute=0,
-        args=[app]
-    )
-    scheduler.start()
-
-    print("🤖 HisobBot ishga tushdi...")
     app.run_polling()
+
 
 if __name__ == "__main__":
     main()
